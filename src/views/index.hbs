@@ -8,38 +8,23 @@
 
   <h1>Repeater Field</h1>
   <div>
-    <form class="repeater">
-      <div data-repeater-list="group-a">
+    <form class="repeater" action="/new" method="post">
+      <div data-repeater-list="repeater-group">
         <div data-repeater-item>
           <div data-repeater-item="" style="">
-            <input name="group-a[0][untyped-input]" value="A">
 
-            <input type="text" name="group-a[0][text-input]" value="A">
+            <input name='titel' placeholder='titel' value="A">
 
-            <input type="date" name="group-a[0][date-input]">
+            <textarea name='description' placeholder='description'>A</textarea>
 
-            <textarea name="group-a[0][textarea-input]">A</textarea>
+            <input type="checkbox" name="checkbox" value="A">
 
-            <input type="radio" name="group-a[0][radio-input]" value="A">
-            <input type="radio" name="group-a[0][radio-input]" value="B">
-
-            <input type="checkbox" name="group-a[0][checkbox-input][]" value="A">
-            <input type="checkbox" name="group-a[0][checkbox-input][]" value="B">
-
-            <select name="group-a[0][select-input]">
-              <option value="A" selected="">A</option>
-              <option value="B">B</option>
-            </select>
-
-            <select name="group-a[0][multiple-select-input][]" multiple="">
-              <option value="A" selected="">A</option>
-              <option value="B" selected="">B</option>
-            </select>
           </div>
           <input data-repeater-delete type="button" value="Delete" />
         </div>
       </div>
       <input data-repeater-create type="button" value="Add" />
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
   <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
