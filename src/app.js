@@ -14,54 +14,53 @@ app.set('view engine', 'hbs')
 app.use(logger(process.env.LOG_ENV))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
-  extended: false,
+    extended: false,
 }))
 app.use(express.static(path.join(__dirname, '/../public/')))
 app.use(cookieParser())
 
 // routes
 app.get('/', (req, res) => {
-  res.render('index')
+    res.render('index')
 })
 
 app.post('/new', async(req, res) => {
-  const obj = req.body
-  console.log(req.body)
-  const desc = 'undefined'
-  const titel = 'undefined'
-  let i = 1
-  for (const k in obj) {
-    const item = obj[k]
+    const obj = req.body
 
-    if (k === `repeater-group[${i}][titel]`) {
-      this.titel = item
+    const out = {}
+
+    for (const key in obj) {
+        const value = obj[key]
+
+        const match = /repeater-group\[([0-9])\]\[([a-z]+)\]/.exec(key)
+        const index = match[1]
+        const property = match[2]
+
+        out[index] = { ...out[index], [property]: value }
     }
-    if (k === `repeater-group[${i}][description]`) {
-      this.desc = item
+
+    try {
+        Object.keys(out).forEach(async i => {
+            await postService.createPost(out[i].titel, out[i].description)
+        })
     }
-    if (this.titel != 'undefined' && this.desc != 'undefined') {
-      try {
-        await postService.createPost(titel, desc)
-      } catch (error) {
+    catch (error) {
         res.status(500)
         res.render('error', {
-          message: 'Invalide Post',
-          error,
+            message: 'Invalide Post',
+            error,
         })
-      }
     }
 
-    i += 1
-  }
-  res.redirect('/')
+    res.redirect('/')
 })
 
 // Start Server
 const port = process.env.APP_PORT || 8080
-const host = process.env.APP_URL || 'localhost'
+const host = process.env.APP_URL || '0.0.0.0'
 
 app.listen(port, host, () => {
-  console.log(`Listening on ${host}:${port}/`)
+    console.log(`Listening on ${host}:${port}/`)
 })
 
 module.exports = app
